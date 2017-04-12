@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Task_2_33听令的小方块</title>
+    <style>
+        #plant,.ctr{
+            width:552px;
+            height:552px;
+            margin-bottom:20px;
+            text-align: center;
+        }
+        #plant-right{
+            float:right;
+            width:502px;
+            height:502px;
+            border:1px solid #000;
+            box-sizing:border-box;
+            position:relative;
+        }
+        #plant-left{
+            width:50px;
+            height:50px;
+            box-sizing:border-box;
+            float:left;
+        }
+        .top span,#plant-left span{border:0;}
+        span{
+            float:left;
+            width:50px;
+            height:50px;
+            line-height: 50px;
+            border:1px dotted #000;
+            box-sizing:border-box;
+            text-align: center;
+            vertical-align: bottom;
+        }
+        #box{
+            border-top:10px solid blue;
+            background-color: red;
+            transition: all .5s;
+        }
+    </style>
+</head>
+<body>
+<div class="wrapper">
+    <div class="top">
+        <span></span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
+    </div>
+    <div id="plant">
+        <div id="plant-left"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div>
+        <div id="plant-right">
+            <span id="box" style="transform: rotate(0deg);position: absolute;left: 0;top: 0;"></span>
+            <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        </div>
+    </div>
+</div>
+<div class="control">
+    <div class="btns">
+        <button class="btn" id="go">GO</button>
+        <button class="btn" id="turn-left">TUN LEF</button>
+        <button class="btn" id="turn-right">TUN RIG</button>
+        <button class="btn" id="turn-back">TUN BAC</button>
+    </div>
+</div>
+<script>
+    function $(id_selector) {
+        return document.getElementById(id_selector.substring(1, id_selector.length));
+    }
+    function angle(element, ang) {
+        // 参数为1，获取元素旋转角度
+        if (arguments.length === 1) {
+            var text = element.style.transform;
+            text = text.substring(7, text.length);
+            text = parseInt(text);
+            return text;
+        }
+        // 参数为2，设置元素旋转角度
+        if (arguments.length === 2) {
+            element.style.transform = "rotate(" + ang + "deg)";
+            return;
+        }
+    }
+
+    function turnLeft() {
+        var block = $("#box"),
+                angleNow = angle(block);
+
+        angleNow = angleNow - 90;
+
+        angle(block, angleNow);
+    }
+
+    /**
+     * 右转按钮的事件处理程序
+     */
+    function turnRight() {
+        var block = $("#box"),
+                angleNow = angle(block);
+
+        angleNow = angleNow + 90;
+
+        angle(block, angleNow);
+    }
+
+    /**
+     * 向后转按钮的事件处理程序
+     */
+    function turnBack() {
+        var block = $("#box"),
+                angleNow = angle(block);
+
+        angleNow = angleNow + 180;
+
+        angle(block, angleNow);
+    }
+
+    function go(){
+        var block = document.getElementById("box"),
+                angleNow = angle(block);
+
+        angleNow = angleNow % 360;
+        angleNow = angleNow >= 0 ? angleNow : (angleNow + 360);
+
+        var left = parseInt(block.style.left),
+                top = parseInt(block.style.top);
+
+        if (angleNow == 0) {
+            if (top >= 50)
+                block.style.top = (top - 50) + "px";
+        }
+        if (angleNow == 90) {
+            if (left <= 400)
+                block.style.left = (left + 50) + "px";
+        }
+        if (angleNow == 180) {
+            if (top <= 400)
+                block.style.top = (top + 50) + "px";
+        }
+        if (angleNow == 270) {
+            if (left >= 50)
+                block.style.left = (left - 50) + "px";
+        }
+    }
+    function bindEventForBtn() {
+        $("#go").onclick = go;
+        $("#turn-left").onclick = turnLeft;
+        $("#turn-right").onclick = turnRight;
+        $("#turn-back").onclick = turnBack;
+    }
+
+    window.onload = bindEventForBtn;
+</script>
+</body>
+</html>
